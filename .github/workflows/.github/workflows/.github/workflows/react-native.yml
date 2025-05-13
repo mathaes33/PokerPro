@@ -1,0 +1,34 @@
+name: React Native CI
+
+on:
+  push:
+    paths:
+      - 'ui/react_native/**'
+      - 'package.json'
+      - 'yarn.lock'
+  pull_request:
+    paths:
+      - 'ui/react_native/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          cd ui/react_native
+          npm install
+
+      - name: Check Expo project
+        run: |
+          cd ui/react_native
+          npx expo install --check
