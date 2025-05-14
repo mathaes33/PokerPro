@@ -3,8 +3,9 @@ import { View, Button, Image, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 export default function App() {
-  const [image, setImage] = useState(null);
-  const [result, setResult] = useState(null);
+  const [image, setImage] = useState<string | null>(null);
+const [ocrResult, setOcrResult] = useState<string>('');
+const [gameState, setGameState] = useState<any>(null); // Replace `any` with a proper interface if you can
 
   const pickImage = async () => {
     const res = await ImagePicker.launchImageLibraryAsync({ base64: true });
