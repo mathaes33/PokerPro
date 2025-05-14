@@ -3,9 +3,18 @@ import { View, Button, Image, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 export default function App() {
-  const [image, setImage] = useState<string | null>(null);
-const [ocrResult, setOcrResult] = useState<string>('');
-const [gameState, setGameState] = useState<any>(null); // Replace `any` with a proper interface if you can
+  const [image, setImage] = try {
+  setLoading(true);
+  setError(null);
+  const res = await axios.post('http://192.168.1.29:5000/ocr', { image: base64Img });
+  setOcrResult(res.data.parsed_text);
+  setGameState(res.data.game_state);
+} catch (err) {
+  console.error(err);
+  setError('Failed to process image');
+} finally {
+  setLoading(false);
+}
 
   const pickImage = async () => {
     const res = await ImagePicker.launchImageLibraryAsync({ base64: true });
