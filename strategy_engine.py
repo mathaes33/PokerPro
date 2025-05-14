@@ -1,16 +1,40 @@
+def classify_hand(card1, card2):
+    """
+    Takes two hole cards and classifies them into poker hand groups.
+    Assumes input like 'Ah', 'Ks', etc.
+    """
+    rank1, suit1 = card1[0], card1[1]
+    rank2, suit2 = card2[0], card2[1]
+    suited = suit1 == suit2
+
+    ranks = sorted([rank1, rank2], reverse=True)
+    hand = ''.join(ranks)
+    if suited:
+        hand += 's'
+    else:
+        hand += 'o'
+
+    return hand
+
+# Simplified preflop hand categories
+strong_hands = {'AA', 'KK', 'QQ', 'JJ', 'AKs'}
+medium_hands = {'TT', '99', '88', 'AQs', 'AJs', 'KQs', 'AKo'}
+speculative_hands = {'77', '66', '55', 'AJo', 'KQo', 'ATs', 'KJs'}
+
 def recommend_action(game_state):
-    # Naive rule-based recommendation
+    # Expecting hero's hand in game_state
+    hero = game_state.get('hero', {'hand': ['Ah', 'Kd']})
+    card1, card2 = hero['hand']
+    hand_type = classify_hand(card1, card2)
+
     pot = game_state.get('pot', 0)
-    actions = game_state.get('actions', [])
     player_count = len(game_state.get('players', []))
 
-    # If few players and pot is small, play aggressive
-    if pot < 100 and player_count <= 3:
+    if hand_type in strong_hands:
         return "raise"
-
-    # If pot is big and many players are in, be cautious
-    if pot >= 100 and any(act for act in actions if 'raises' in act[1]):
+    elif hand_type in medium_hands:
+        return "call" if pot <= 200 else "fold"
+    elif hand_type in speculative_hands:
+        return "call" if player_count >= 4 and pot < 100 else "fold"
+    else:
         return "fold"
-
-    # Otherwise, play balanced
-    return "call"
