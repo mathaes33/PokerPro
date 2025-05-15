@@ -1,5 +1,3 @@
-# test_pokerpro.py
-
 import unittest
 from pokerpro import Card, Deck,class TestCard(unittest.TestCase):
 
