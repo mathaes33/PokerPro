@@ -30,3 +30,24 @@
 === Milestone 6: Testing and CI
 - [ ] Unit tests for parser and equity logic
 - [ ] GitHub Actions for backend + React Native CI
+
+PokerPro/
+├── backend/
+│   ├── app.py
+│   ├── ocr.py
+│   ├── parser.py
+│   ├── strategy_engine.py
+│   ├── models.py
+│   └── utils.py
+├── frontend/
+│   ├── App.js
+│   └── components/
+├── overlay/
+│   ├── main.js
+│   └── renderer.js
+├── .github/
+│   └── workflows/
+├── uploads/
+├── README.md
+├── requirements.txt
+└── LICENSE
